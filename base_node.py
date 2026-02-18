@@ -23,7 +23,9 @@ class BaseNode:
 
     def __init__(self):
         if BaseNode._service is None:
-            BaseNode._service = Service(ChromeDriverManager().install())
+            #BaseNode._service = Service(ChromeDriverManager().install())
+            BaseNode._service = Service(executable_path='/usr/local/bin/chromedriver')
+            pass
             
         self.chrome_options = Options()
         self.chrome_options.add_argument('--headless')
@@ -35,6 +37,10 @@ class BaseNode:
         try:
             # 设置初始窗口大小
             driver.set_window_size(width, height or 1024)
+            if not url.startswith("file://"):
+                url = "file://{}".format(url.strip())
+            print("url :")
+            print(url)
             driver.get(url)
             
             # 等待页面加载完成
